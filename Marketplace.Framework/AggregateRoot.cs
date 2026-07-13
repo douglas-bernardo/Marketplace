@@ -1,7 +1,7 @@
 ﻿namespace Marketplace.Framework
 {
-    public abstract class AggregateRoot<TId>
-        : IInternalEventHandler where TId : Value<TId>
+    public abstract class AggregateRoot<TId> : IInternalEventHandler
+        where TId : Value<TId>
     {
         public TId Id { get; protected set; }
 

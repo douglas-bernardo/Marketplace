@@ -4,21 +4,30 @@ namespace Marketplace.Domain
 {
     public class Picture : Entity<PictureId>
     {
-        internal PictureSize Size { get; private set; }
+        // Properties to handle the persistence
+        public Guid PictureId
+        {
+            get => Id.Value;
+            set { }
+        }
 
-        internal Uri Location { get; private set; }
+        protected Picture() { }
 
-        internal int Order { get; private set; }
+        // Entity state
+        public ClassifiedAdId ParentId { get; private set; }
+        public PictureSize Size { get; private set; }
+        public string Location { get; private set; }
+        public int Order { get; private set; }
 
         protected override void When(object @event)
         {
             switch (@event)
             {
                 case Events.PictureAddedToAClassifiedAd e:
+                    ParentId = new ClassifiedAdId(e.ClassifiedAdId);
                     Id = new PictureId(e.PictureId);
-                    Location = new Uri(e.Url);
-                    Size = new PictureSize
-                    { Height = e.Height, Width = e.Width };
+                    Location = e.Url;
+                    Size = new PictureSize { Height = e.Height, Width = e.Width };
                     Order = e.Order;
                     break;
                 case Events.ClassifiedAdPictureResized e:
@@ -31,11 +40,14 @@ namespace Marketplace.Domain
             => Apply(new Events.ClassifiedAdPictureResized
             {
                 PictureId = Id.Value,
-                Height = newSize.Height,
+                ClassifiedAdId = ParentId.Value,
+                Height = newSize.Width,
                 Width = newSize.Width
             });
 
-        public Picture(Action<object> applier) : base(applier) { }
+        public Picture(Action<object> applier) : base(applier)
+        {
+        }
     }
 
     public class PictureId : Value<PictureId>
@@ -43,5 +55,7 @@ namespace Marketplace.Domain
         public PictureId(Guid value) => Value = value;
 
         public Guid Value { get; }
+
+        protected PictureId() { }
     }
 }

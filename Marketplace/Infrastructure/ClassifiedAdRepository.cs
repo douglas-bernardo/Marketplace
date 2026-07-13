@@ -1,25 +1,23 @@
 ﻿using Marketplace.Domain;
-using Raven.Client.Documents.Session;
+using Marketplace.Infrastructure.Persistence;
 
 namespace Marketplace.Infrastructure
 {
     public class ClassifiedAdRepository : IClassifiedAdRepository
     {
-        // the session itself represents the unit of work
-        private readonly IAsyncDocumentSession _session;
-        public ClassifiedAdRepository(IAsyncDocumentSession session)
-            => _session = session;
+        private readonly ClassifiedAdDbContext _dbContext;
 
-        public Task Add(ClassifiedAd entity)
-            => _session.StoreAsync(entity, EntityId(entity.Id));
+        public ClassifiedAdRepository(ClassifiedAdDbContext dbContext)
+            => _dbContext = dbContext;
 
-        public Task<bool> Exists(ClassifiedAdId id)
-            => _session.Advanced.ExistsAsync(EntityId(id));
+        public async Task Add(ClassifiedAd entity)
+            => await _dbContext.ClassifiedAds.AddAsync(entity);
 
-        public Task<ClassifiedAd> Load(ClassifiedAdId id)
-            => _session.LoadAsync<ClassifiedAd>(EntityId(id));
+        public async Task<bool> Exists(ClassifiedAdId id)
+            => await _dbContext.ClassifiedAds.FindAsync(id.Value) != null;
 
-        private static string EntityId(ClassifiedAdId id)
-            => $"ClassifiedAd/{id.ToString()}";
+        public async Task<ClassifiedAd> Load(ClassifiedAdId id)
+            => await _dbContext.ClassifiedAds.FindAsync(id.Value)
+                ?? throw new InvalidOperationException($"ClassifiedAd with id {id} not found.");
     }
 }

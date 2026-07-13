@@ -9,6 +9,8 @@
 
         protected Entity(Action<object> applier) => _applier = applier;
 
+        protected Entity() { }
+
         protected abstract void When(object @event);
 
         protected void Apply(object @event)

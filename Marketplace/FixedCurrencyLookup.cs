@@ -4,27 +4,26 @@ namespace Marketplace
 {
     public class FixedCurrencyLookup : ICurrencyLookup
     {
-        private static readonly IEnumerable<CurrencyDetails> _currencies =
-            new[]
-            {
-                new CurrencyDetails
+        private static readonly IEnumerable<Currency> _currencies =
+            [
+                new Currency
                 {
                     CurrencyCode = "EUR",
                     DecimalPlaces = 2,
                     InUse = true
                 },
-                new CurrencyDetails
+                new Currency
                 {
                     CurrencyCode = "USD",
                     DecimalPlaces = 2,
                     InUse = true
                 }
-            };
+            ];
 
-        public CurrencyDetails FindCurrency(string currencyCode)
+        public Currency FindCurrency(string currencyCode)
         {
             var currency = _currencies.FirstOrDefault(x => x.CurrencyCode == currencyCode);
-            return currency ?? CurrencyDetails.None;
+            return currency ?? Currency.None;
         }
     }
 }

@@ -2,6 +2,7 @@ using Marketplace;
 using Marketplace.Domain;
 using Marketplace.Framework;
 using Marketplace.Infrastructure;
+using Marketplace.Infrastructure.Persistence;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,22 +14,27 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClassifiedAds", Version = "v1" });
 });
 
+const string connectionString =
+    "Host=localhost;Port=5432;Database=Marketplace_Chapter8;Username=ddd;Password=book;Include Error Detail=true";
 
-var store = new Raven.Client.Documents.DocumentStore
-{
-    Urls = new[] { "http://localhost:8080" },
-    Database = "Marketplace_Chapter8",
-    Conventions = { FindIdentityProperty = m => m.Name == "DbId" }
-};
-store.Initialize();
+builder.Services.AddMarketplacePersistence(
+    connectionString,
+    enableSensitiveLogging: builder.Environment.IsDevelopment());
 
 builder.Services.AddSingleton<ICurrencyLookup, FixedCurrencyLookup>();
-builder.Services.AddScoped(c => store.OpenAsyncSession());
-builder.Services.AddScoped<IUnitOfWork, RavenDbUnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork, EfCoreUnitOfWork>();
 builder.Services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
 builder.Services.AddScoped<Marketplace.Api.ClassifiedAdsApplicationService>();
 
 var app = builder.Build();
+
+await app.MigrateDatabaseAsync();
+
+// Configure exception handling for development
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
 // add swagger for easy testing of the API
 app.UseSwagger();
