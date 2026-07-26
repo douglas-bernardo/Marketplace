@@ -1,4 +1,4 @@
-﻿using Marketplace.Domain;
+﻿using Marketplace.Domain.ClassifiedAd;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Infrastructure.Persistence;

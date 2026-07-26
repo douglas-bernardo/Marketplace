@@ -19,7 +19,7 @@ namespace Marketplace.Api
         public Task<IActionResult> Post(ClassifiedAds.V1.Create request)
            => HandleRequest(request, _applicationService.Handle);
 
-        [Route("name")]
+        [Route("title")]
         [HttpPut]
         public Task<IActionResult> Put(ClassifiedAds.V1.SetTitle request)
             => HandleRequest(request, _applicationService.Handle);
