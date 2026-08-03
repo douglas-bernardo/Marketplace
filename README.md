@@ -1,3 +1,3 @@
 Marketplace
-Projeto de aprenddizado do livro Hands-On Domain-Driven Design with .NET Core
-Versão pesistência RavenDB
+Projeto de aprendizado do livro Hands-On Domain-Driven Design with .NET Core
+Versão persistência RavenDB
