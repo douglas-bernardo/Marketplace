@@ -10,7 +10,7 @@ namespace Marketplace.Infrastructure.Persistence
 
             var context =
                 scope.ServiceProvider
-                     .GetRequiredService<ClassifiedAdDbContext>();
+                     .GetRequiredService<MarketplaceDbContext>();
 
             await context.Database.MigrateAsync();
         }

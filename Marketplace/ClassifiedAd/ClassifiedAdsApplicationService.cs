@@ -1,10 +1,9 @@
-﻿using Marketplace.Domain;
+﻿using Marketplace.Framework;
 using Marketplace.Domain.ClassifiedAd;
 using Marketplace.Domain.Shared;
-using Marketplace.Framework;
-using static Marketplace.Contracts.ClassifiedAds;
+using static Marketplace.ClassifiedAd.Commands;
 
-namespace Marketplace.Api
+namespace Marketplace.ClassifiedAd
 {
     public class ClassifiedAdsApplicationService(
         IClassifiedAdRepository repository,
@@ -13,7 +12,8 @@ namespace Marketplace.Api
     {
         public Task Handle(object command) => command switch
         {
-            V1.Create cmd => HandleCreate(cmd),
+            V1.Create cmd => 
+                HandleCreate(cmd),
             V1.SetTitle cmd => HandleUpdate(
                 cmd.Id, c => c.SetTitle(ClassifiedAdTitle.FromString(
                     cmd.Title ?? throw new ArgumentNullException(nameof(cmd.Title), "Title cannot be null")))),
@@ -25,8 +25,8 @@ namespace Marketplace.Api
             V1.UpdatePrice cmd => HandleUpdate(
                 cmd.Id,
                 c => c.UpdatePrice(
-                    Price.FromDecimal(cmd.Price, 
-                        cmd.Currency ?? throw new ArgumentNullException(nameof(cmd.Currency), "Currency cannot be null"), 
+                    Price.FromDecimal(cmd.Price,
+                        cmd.Currency ?? throw new ArgumentNullException(nameof(cmd.Currency), "Currency cannot be null"),
                         currencyLookup))),
 
             V1.RequestToPublish cmd => HandleUpdate(
@@ -40,7 +40,7 @@ namespace Marketplace.Api
             if (await repository.Exists(new ClassifiedAdId(cmd.Id)))
                 throw new InvalidOperationException($"Entity with id {cmd.Id} already exists");
 
-            var classifiedAd = new ClassifiedAd(
+            var classifiedAd = new Domain.ClassifiedAd.ClassifiedAd(
                 new ClassifiedAdId(cmd.Id),
                 new UserId(cmd.OwnerId));
 
@@ -48,7 +48,7 @@ namespace Marketplace.Api
             await unitOfWork.Commit();
         }
 
-        private async Task HandleUpdate(Guid classifiedAdId, Action<ClassifiedAd> operation)
+        private async Task HandleUpdate(Guid classifiedAdId, Action<Domain.ClassifiedAd.ClassifiedAd> operation)
         {
             var classifiedAd = await repository.Load(new ClassifiedAdId(classifiedAdId));
             if (classifiedAd == null)

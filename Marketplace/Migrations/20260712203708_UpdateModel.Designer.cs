@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Marketplace.Migrations
 {
-    [DbContext(typeof(ClassifiedAdDbContext))]
+    [DbContext(typeof(MarketplaceDbContext))]
     [Migration("20260712203708_UpdateModel")]
     partial class UpdateModel
     {

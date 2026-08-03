@@ -12,9 +12,9 @@ namespace Marketplace.Domain.ClassifiedAd
 
         // Aggregate state properties
         public UserId OwnerId { get; private set; }
-        public ClassifiedAdTitle Title { get; private set; }
-        public ClassifiedAdText Text { get; private set; }
-        public Price Price { get; private set; }
+        public ClassifiedAdTitle? Title { get; private set; }
+        public ClassifiedAdText? Text { get; private set; }
+        public Price? Price { get; private set; }
         public ClassifiedAdState State { get; private set; }
         public UserId ApprovedBy { get; private set; }
         public List<Picture> Pictures { get; }
@@ -66,7 +66,8 @@ namespace Marketplace.Domain.ClassifiedAd
                 Order = NewPictureOrder()
             });
 
-            int NewPictureOrder() => Pictures.Any() ? Pictures.Max(x => x.Order) + 1 : 0;
+            int NewPictureOrder() 
+                => Pictures.Any() ? Pictures.Max(x => x.Order) + 1 : 0;
         }
 
         public void ResizePicture(PictureId pictureId, PictureSize newSize)
@@ -125,7 +126,8 @@ namespace Marketplace.Domain.ClassifiedAd
         private Picture? FindPicture(PictureId id)
             => Pictures.FirstOrDefault(x => x.Id == id);
 
-        private Picture? FirstPicture => Pictures.OrderBy(x => x.Order).FirstOrDefault();
+        private Picture? FirstPicture 
+            => Pictures.OrderBy(x => x.Order).FirstOrDefault();
 
         protected override void EnsureValidState()
         {
@@ -155,10 +157,10 @@ namespace Marketplace.Domain.ClassifiedAd
 
         public enum ClassifiedAdState
         {
-            PendingReview,
-            Active,
-            Inactive,
-            MarkedAsSold
+            PendingReview = 1,
+            Active = 2,
+            Inactive = 3,
+            MarkedAsSold = 4
         }
     }
 }

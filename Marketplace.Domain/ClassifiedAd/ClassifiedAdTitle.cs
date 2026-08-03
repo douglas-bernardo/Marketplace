@@ -42,7 +42,6 @@ namespace Marketplace.Domain.ClassifiedAd
                     nameof(value));
         }
 
-        public static ClassifiedAdTitle NoTitle =
-            new ClassifiedAdTitle("");
+        public static ClassifiedAdTitle NoTitle = new ClassifiedAdTitle("");
     }
 }

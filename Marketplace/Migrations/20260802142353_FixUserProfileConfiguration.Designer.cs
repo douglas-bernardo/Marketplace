@@ -3,6 +3,7 @@ using System;
 using Marketplace.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Marketplace.Migrations
 {
     [DbContext(typeof(MarketplaceDbContext))]
-    partial class ClassifiedAdDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260802142353_FixUserProfileConfiguration")]
+    partial class FixUserProfileConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,6 +69,7 @@ namespace Marketplace.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("PhotoUrl")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("UserProfileId");

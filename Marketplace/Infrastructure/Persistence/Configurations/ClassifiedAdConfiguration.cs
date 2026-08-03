@@ -1,13 +1,12 @@
-﻿using Marketplace.Domain.ClassifiedAd;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Marketplace.Infrastructure.Persistence.Configurations
 {
     public sealed class ClassifiedAdConfiguration
-    : IEntityTypeConfiguration<ClassifiedAd>
+    : IEntityTypeConfiguration<Domain.ClassifiedAd.ClassifiedAd>
     {
-        public void Configure(EntityTypeBuilder<ClassifiedAd> builder)
+        public void Configure(EntityTypeBuilder<Domain.ClassifiedAd.ClassifiedAd> builder)
         {
             builder.HasKey(x => x.ClassifiedAdId);
             builder.OwnsOne(x => x.Id);

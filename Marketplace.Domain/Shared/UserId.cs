@@ -1,6 +1,8 @@
-﻿namespace Marketplace.Domain.Shared
+﻿using Marketplace.Framework;
+
+namespace Marketplace.Domain.Shared
 {
-    public class UserId
+    public class UserId : Value<UserId>
     {
         protected UserId() { }
 
@@ -16,6 +18,7 @@
 
         public static implicit operator Guid(UserId self) => self.Value;
 
-        public static UserId NoUser => new UserId();
+        public static UserId NoUser =>
+            new UserId();
     }
 }

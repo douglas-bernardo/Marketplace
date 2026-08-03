@@ -5,12 +5,12 @@
     {
         public TId Id { get; protected set; }
 
-        protected abstract void When(object @event);
-
         private readonly List<object> _changes;
-
+        
+        protected abstract void When(object @event);
+        
         protected AggregateRoot() => _changes = new List<object>();
-
+        
         protected void Apply(object @event)
         {
             When(@event);
@@ -19,6 +19,7 @@
         }
 
         public IEnumerable<object> GetChanges() => _changes.AsEnumerable();
+        
         public void ClearChanges() => _changes.Clear();
 
         protected abstract void EnsureValidState();
