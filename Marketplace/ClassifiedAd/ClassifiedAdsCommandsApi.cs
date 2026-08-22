@@ -4,6 +4,9 @@ using ILogger = Serilog.ILogger;
 
 namespace Marketplace.ClassifiedAd
 {
+    /// <summary>
+    /// API controller for handling commands related to classified ads. It provides endpoints to create, update, and publish classified ads.
+    /// </summary>
     [Route("/ad")]
     public class ClassifiedAdsCommandsApi : Controller
     {

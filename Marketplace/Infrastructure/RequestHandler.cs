@@ -5,6 +5,14 @@ namespace Marketplace.Infrastructure
 {
     public static class RequestHandler
     {
+        /// <summary>
+        /// Handles a command and returns an IActionResult indicating success or failure.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="request"></param>
+        /// <param name="handler"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
         public static async Task<IActionResult> HandleCommand<T>(
             T request, Func<T, Task> handler, ILogger log)
         {
@@ -25,6 +33,13 @@ namespace Marketplace.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Handles a query and returns the result as an IActionResult.
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
         public static async Task<IActionResult> HandleQuery<TModel>(
             Func<Task<TModel>> query, ILogger log)
         {

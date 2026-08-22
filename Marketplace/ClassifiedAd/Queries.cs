@@ -6,6 +6,7 @@ namespace Marketplace.ClassifiedAd
 {
     public static class Queries
     {
+        // The following methods are extension methods for the DbConnection class that allow querying the database for classified ads based on different criteria.
         public static Task<IEnumerable<ReadModels.PublicClassifiedAdListItem>> Query(
             this DbConnection connection,
             QueryModels.GetPublishedClassifiedAds query)
