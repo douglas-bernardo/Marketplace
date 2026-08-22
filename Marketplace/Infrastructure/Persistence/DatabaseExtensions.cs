@@ -12,7 +12,7 @@ namespace Marketplace.Infrastructure.Persistence
                 scope.ServiceProvider
                      .GetRequiredService<MarketplaceDbContext>();
 
-            await context.Database.MigrateAsync();
+            await context.Database.MigrateAsync(); // ✅ Aplica migrations pendentes
         }
     }
 }

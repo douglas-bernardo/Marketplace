@@ -45,6 +45,7 @@ builder.Services.AddScoped(c => new UserProfileApplicationService(
 
 var app = builder.Build();
 
+// Migrate the database on startup
 await app.MigrateDatabaseAsync();
 
 // Configure exception handling for development
